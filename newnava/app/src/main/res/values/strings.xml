@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="action_settings">Settings</string>
+    <string name="drawer_item_note">Notes</string>
+    <string name="drawer_item_calculate">Calculate</string>
+    <string name="drawer_item_alarmclock">Alarm Clock</string>
+    <string name="drawer_item_weather">Weather</string>
+    <string name="drawer_flashlight">flashlight</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>
