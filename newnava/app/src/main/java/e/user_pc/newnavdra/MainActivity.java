@@ -2,13 +2,17 @@ package e.user_pc.newnavdra;
 
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
 import com.mikepenz.iconics.typeface.FontAwesome;
 import com.mikepenz.materialdrawer.Drawer;
@@ -66,24 +70,22 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id, IDrawerItem drawerItem)  {
 
-                        if (drawerItem != null) {
-                            Intent intent = null;
-                            if (drawerItem.getIdentifier() == 1) {
-                                intent = new Intent(MainActivity.this, List.class);
-                            } /*else if (drawerItem.getIdentifier() == 2) {
-                                intent = new Intent(MainActivity.this, FragmentCalculate.class);
-                            }*/
-                            /*} else if (drawerItem.getIdentifier() == 3) {
-                                intent = new Intent(DrawerActivity.this, MultiDrawerActivity.class);
-                            } else if (drawerItem.getIdentifier() == 4) {
-                                intent = new Intent(DrawerActivity.this, NonTranslucentDrawerActivity.class);
-                            } else if (drawerItem.getIdentifier() == 5) {
-                                intent = new Intent(DrawerActivity.this, AdvancedActivity.class);
-                            }
-                            if (intent != null) {
-                                DrawerActivity.this.startActivity(intent);
-                            }*/
-
+                        String packageName = null;
+                        switch (position) {
+                            case 1:
+                                packageName = "e.user_pc.list";
+                                break;
+                            case 2:
+                                packageName = "e.user_pc.calculat";
+                                break;
+                            case 6:
+                                packageName = "e.user_pc.fonarik";
+                                break;
+                        }
+                        if (packageName == null) {
+                            showError(MainActivity.this);
+                        } else {
+                            openApp(MainActivity.this, packageName);
                         }
                      /*   return false;*/
                     }
@@ -103,4 +105,24 @@ public class MainActivity extends AppCompatActivity {
                 super.onBackPressed();
             }
         }
+
+        public static boolean openApp(Context context, String packageName) {
+            PackageManager manager = context.getPackageManager();
+            try {
+                Intent intentForPackage = manager.getLaunchIntentForPackage(packageName);
+                if (intentForPackage == null) {
+                    showError(context);
+                    return false;
+                }
+                intentForPackage.addCategory(Intent.CATEGORY_LAUNCHER);
+                context.startActivity(intentForPackage);
+                return true;
+            } catch (ActivityNotFoundException e) {
+                return false;
+            }
+        }
+
+    private static void showError(Context context) {
+        Toast.makeText(context, "Нет приложения", Toast.LENGTH_SHORT).show();
     }
+}
